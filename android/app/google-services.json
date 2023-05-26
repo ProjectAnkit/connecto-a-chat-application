@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "353442213737",
+    "project_id": "mychatapp-9a94d",
+    "storage_bucket": "mychatapp-9a94d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353442213737:android:d9b5b789b22f1cc155d7f8",
+        "android_client_info": {
+          "package_name": "com.projectAnkit.mychatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353442213737-3h4huk6h9i2ed56gstevkh7uh6q0qcea.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhOd44CV9MSEIJnIggelPTZa27KP_2suo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353442213737-3h4huk6h9i2ed56gstevkh7uh6q0qcea.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
