@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grouped_list/grouped_list.dart';
+import 'package:intl/intl.dart';
 import 'package:mychatapplication/ChatPage/Utilities/MyTextSpace.dart';
 import 'package:mychatapplication/Utilities/Models/ChatModel.dart';
 import 'package:mychatapplication/Utilities/Models/ChatRoomModel.dart';
@@ -129,19 +131,35 @@ class _ChatPageState extends State<ChatPage> {
                     
                       if(snapshot.connectionState == ConnectionState.active){
                        
-                       ChatModel chatmodel = ChatModel();
+                       ChatModel msg = ChatModel();
                        QuerySnapshot<Object> datasnapshot = snapshot.data as QuerySnapshot<Object>;
                    
                       return Expanded(
-                        child: ListView.builder(
-                              
+                        child: GroupedListView<ChatModel, DateTime>(
+                          sort: false,
                           reverse: true,
-                          itemCount: datasnapshot.docs.length,
-                          itemBuilder: (context,index){
-                            
-                            Map<String,dynamic> message = datasnapshot.docs[index].data() as Map<String,dynamic>;
-                            ChatModel msg = chatmodel.fromMap(message);
-                            return Row(
+                          elements: datasnapshot.docs.map((doc) {
+                            Map<String,dynamic> message = doc.data() as Map<String,dynamic>;
+                            return msg.fromMap(message);
+                          }).toList(), 
+                          groupBy: (msg)
+                          {
+                            return DateTime(
+                              msg.timestamp!.toDate().year,
+                              msg.timestamp!.toDate().month,
+                              msg.timestamp!.toDate().day,
+                             );
+                          },
+                          groupSeparatorBuilder: (DateTime date) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text(DateFormat('MMM d,yyyy').format(date),style: GoogleFonts.jost(fontSize: 12,color: Colors.black),),
+                              ),
+                            );
+                          },
+                          itemBuilder: (context, msg) {
+                             return Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: msg.sender==widget.targetUser.uid?MainAxisAlignment.start:MainAxisAlignment.end,
                               children: [
@@ -169,7 +187,8 @@ class _ChatPageState extends State<ChatPage> {
                                 ):Container()
                               ],
                             );
-                          }),
+                          },
+                          )
                       );
                     }
       

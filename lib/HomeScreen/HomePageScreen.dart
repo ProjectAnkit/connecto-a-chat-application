@@ -107,9 +107,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     ChatRoomModel RoomModel = ChatRoomModel();
               
                    if(snapshot.connectionState == ConnectionState.waiting){
-                    return const Center(
-                      child: CircularProgressIndicator(color: Colors.black),
-                    );
+                    return Container();
                    }
               
                    else{
