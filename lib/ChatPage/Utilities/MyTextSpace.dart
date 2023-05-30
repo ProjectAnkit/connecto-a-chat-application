@@ -10,7 +10,7 @@ class MyMessageSpace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4.0),
+      padding: const EdgeInsets.only(bottom: 4.0,left: 4,right: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,8 +18,8 @@ class loadingservice{
 
     if(user==null)
     {
-       Timer(Duration(seconds: 2), () {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+       Timer(const Duration(seconds: 2), () {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
      });
     }
     
@@ -27,14 +28,14 @@ class loadingservice{
       {
           Map<String,dynamic> userdata = userdoc.data() as Map<String,dynamic>;
           String profilepic = userdata["profile url"].toString(); 
-        Timer(Duration(seconds: 2), () {
+        Timer(const Duration(seconds: 2), () {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomePageScreen(profileurl: profilepic,)));
        });
       }
 
       else{
-        Timer(Duration(seconds: 2), () {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Intropage()));
+        Timer(const Duration(seconds: 2), () {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const Intropage()));
      });
       }    
     }

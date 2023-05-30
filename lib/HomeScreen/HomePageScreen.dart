@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   final auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance;
   getUserModel _getUserModel = getUserModel();
+  bool block = false;
  
   @override
   Widget build(BuildContext context) {
@@ -65,7 +68,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         actions: [
             InkWell(
               onTap: ()async{
-
+          
           final userdoc = await firestore.collection("User").doc(user!.uid).get();
           Map<String,dynamic> userdata = userdoc.data() as Map<String,dynamic>;
           String profilepic = userdata["profile url"].toString(); 
@@ -141,6 +144,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                              {
                                return InkWell(
                                 onTap: ()async{
+                                  QuerySnapshot unblock = await firestore.collection("Chatroom").where("unblocked.${user.uid}",isEqualTo: true).where("unblocked.${targetUser.uid}",isEqualTo: true).get();
                                   final userdoc = await firestore.collection("User").doc(user.uid).get();
                                   Map<String,dynamic> userdata = userdoc.data() as Map<String,dynamic>;
                                   String profilepic = userdata["profile url"].toString();
@@ -148,7 +152,20 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                   String email = userdata["email"].toString();
                                   String bio = userdata["bio"].toString();
                                   String phoneNuber = userdata["phoneNumber"].toString();
-
+                                  
+                                  if(unblock.docs.isEmpty)
+                                  {
+                                     setState(() {
+                                       block = true;
+                                     });
+                                  }
+                                  else
+                                  {
+                                    setState(() {
+                                      block = false;
+                                    });
+                                  }
+                                  log(block.toString());
                                   // ignore: use_build_context_synchronously
                                   Navigator.push(context, MaterialPageRoute(builder: (context)=> ChatPage(
                                     OwnUserModel: UserModel(
@@ -159,7 +176,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                       phoneNumber: phoneNuber,
                                     ),
                                     targetUser: targetUser, 
-                                    Chatroom: chatRoomModel)));
+                                    Chatroom: chatRoomModel,
+                                    blocked: block,
+                                    )
+                                     )
+                                    );
                                 },
                                  child: Column(
                                   children: [

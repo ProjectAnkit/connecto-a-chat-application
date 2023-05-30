@@ -54,8 +54,8 @@ class _SignUpPageState extends State<SignUpPage> {
           loading = false;
            _email.clear();
         _password.clear();
-
         });
+        Navigator.pop(context);
     }
 
     catch(e){

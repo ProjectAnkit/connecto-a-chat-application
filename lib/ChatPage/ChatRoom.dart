@@ -12,12 +12,13 @@ import 'package:mychatapplication/Utilities/Models/ChatRoomModel.dart';
 import 'package:mychatapplication/Utilities/Models/UserModel.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key, required this.OwnUserModel, required this.targetUser, required this.Chatroom});
+  const ChatPage({super.key, required this.OwnUserModel, required this.targetUser, required this.Chatroom, required this.blocked});
 
   final ChatRoomModel? Chatroom;
   final UserModel OwnUserModel;
   final UserModel targetUser;
-
+  final bool blocked;
+  
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
@@ -27,9 +28,19 @@ class _ChatPageState extends State<ChatPage> {
   TextEditingController _msgcontroller = TextEditingController();
   final firestore = FirebaseFirestore.instance;
   final auth = FirebaseAuth.instance;
+  bool block = false;
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    block = widget.blocked;
+  }
    
-   
-   
+
+
    void sendmessage()async{
     final user = auth.currentUser;
     String msg = _msgcontroller.text.trim();
@@ -63,17 +74,15 @@ class _ChatPageState extends State<ChatPage> {
         log("message sent");
       }
     }
-
-    else{
-      
-    }
   }
 
 
 
   @override
   Widget build(BuildContext context) {
+   
     final user = auth.currentUser;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 231, 231, 231),
       appBar: AppBar(
@@ -95,6 +104,9 @@ class _ChatPageState extends State<ChatPage> {
                 return[
                      PopupMenuItem(
                       onTap: (){
+                        setState(() {
+                          block = true;
+                        });
                         firestore.collection("Chatroom").doc(widget.Chatroom!.chatRoomid).update({
                           "unblocked.${widget.targetUser.uid}": false,
                         });
@@ -104,6 +116,9 @@ class _ChatPageState extends State<ChatPage> {
 
                        PopupMenuItem(
                       onTap: (){
+                        setState(() {
+                          block = false;
+                        });
                         firestore.collection("Chatroom").doc(widget.Chatroom!.chatRoomid).update({
                           "unblocked.${widget.targetUser.uid}": true,
                         });
@@ -119,23 +134,21 @@ class _ChatPageState extends State<ChatPage> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Image.asset("assets/ChatBackground.jpg",fit: BoxFit.cover,alignment: Alignment.center)),
-          Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 2),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 6),
-            child: Column(
-              children:  [
-                   StreamBuilder(
-                    stream: firestore.collection("Chatroom").doc(widget.Chatroom!.chatRoomid).collection("messages").orderBy("timestamp",descending: true).snapshots(),
-                    builder: (context,snapshot){
-                    
-                      if(snapshot.connectionState == ConnectionState.active){
-                       
-                       ChatModel msg = ChatModel();
-                       QuerySnapshot<Object> datasnapshot = snapshot.data as QuerySnapshot<Object>;
-                   
-                      return Expanded(
-                        child: GroupedListView<ChatModel, DateTime>(
+          Column(
+            children: [
+                 Expanded(
+                   child: Padding(
+                     padding: const EdgeInsets.symmetric(horizontal: 7.0),
+                     child: StreamBuilder(
+                      stream: firestore.collection("Chatroom").doc(widget.Chatroom!.chatRoomid).collection("messages").orderBy("timestamp",descending: true).snapshots(),
+                      builder: (context,snapshot){
+                      
+                        if(snapshot.connectionState == ConnectionState.active){
+                         
+                         ChatModel msg = ChatModel();
+                         QuerySnapshot<Object> datasnapshot = snapshot.data as QuerySnapshot<Object>;
+                     
+                        return GroupedListView<ChatModel, DateTime>(
                           sort: false,
                           reverse: true,
                           elements: datasnapshot.docs.map((doc) {
@@ -169,7 +182,7 @@ class _ChatPageState extends State<ChatPage> {
                                   padding: const EdgeInsets.symmetric(vertical:6.0),
                                   child: Text("${msg.timestamp!.toDate().hour}:${msg.timestamp!.toDate().minute}",style: GoogleFonts.jost(color: Colors.black,fontSize: 10),),
                                 ):Container(),
-      
+                         
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                                   child: Container(
@@ -188,32 +201,41 @@ class _ChatPageState extends State<ChatPage> {
                               ],
                             );
                           },
-                          )
-                      );
-                    }
-      
-      
-                    else{
-                      return const Center(child: CircularProgressIndicator(color: Colors.black),);
-                    }
-                   }),
-                 
-                  const SizedBox(
-                    height: 3,
-                  ),
-          
-                 Align(
-                  alignment: Alignment.bottomCenter,
-                   child: MyMessageSpace(
-                    controller: _msgcontroller,
-                    hint: "Type your message",
-                    ontap: sendmessage,
+                          );
+                      }
+                         
+                         
+                      else{
+                        return const Center(child: CircularProgressIndicator(color: Colors.black),);
+                      }
+                     }),
                    ),
-                 )
-              ],
-            ),
+                 ),
+               
+                const SizedBox(
+                  height: 3,
+                ),
+          
+                block?
+                Container(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(color: Colors.grey),
+                  child: Center(
+                    child: Text("blocked",style: GoogleFonts.jost(color: Colors.black),),
+                  ),
+                ) :         
+                Align(
+                alignment: Alignment.bottomCenter,
+                 child: MyMessageSpace(
+                  controller: _msgcontroller,
+                  hint: "Type your message",
+                  ontap: sendmessage,
+                 ),
+               )
+               
+            ],
           ),
-        ),
         ]
       ),
     );

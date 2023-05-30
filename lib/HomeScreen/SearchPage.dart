@@ -21,7 +21,7 @@ class _SearchPageScreenState extends State<SearchPageScreen> {
   final _searchcontroller = TextEditingController();
   final auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance;
-
+  bool block = false;
 
   Future <ChatRoomModel?> getChatRoomid(UserModel targetUser)async{
     
@@ -147,9 +147,18 @@ class _SearchPageScreenState extends State<SearchPageScreen> {
                       UserModel targetuser = searchedUser.fromMap(userModel);
                        return InkWell(
                         onTap: () async{
+                          final user = auth.currentUser;
                           ChatRoomModel? chatroom = await getChatRoomid(targetuser);
+                          final unblock = await firestore.collection("Chatroom").where("unblocked.${user!.uid}",isEqualTo: true).where("unblocked.${targetuser.uid}").get();
+                          if(unblock.docs.isEmpty)
+                          {
+                           setState(() {
+                             block = true;
+                           });
+                          }
                           // ignore: use_build_context_synchronously
                           Navigator.push(context, MaterialPageRoute(builder: (context)=> ChatPage(
+                            blocked: block,
                             Chatroom: chatroom, 
                             OwnUserModel: widget.OwnUser, 
                             targetUser: searchedUser, 

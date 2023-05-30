@@ -11,7 +11,7 @@ class Loadingdialog{
         return const AlertDialog(
           backgroundColor: Colors.transparent,
           actions: [
-            Center(child: SpinKitPouringHourGlass(color: Colors.white,))
+            Center(child: SpinKitFoldingCube(color: Colors.white,))
           ],
         );
       });

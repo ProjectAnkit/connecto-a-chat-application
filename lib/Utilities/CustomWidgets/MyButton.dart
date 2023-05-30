@@ -17,7 +17,7 @@ class MyButton extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(10)),
         child: Center(
-          child:loading?CircularProgressIndicator(color: Colors.white,) :Text(buttontxt,style: GoogleFonts.jost(color: Colors.white,fontSize: 16),),
+          child: Text(buttontxt,style: GoogleFonts.jost(color: Colors.white,fontSize: 16),),
         ),
       ),
     );

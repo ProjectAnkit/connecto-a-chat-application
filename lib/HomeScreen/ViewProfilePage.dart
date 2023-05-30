@@ -69,9 +69,13 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
 
     return Scaffold(
       appBar: AppBar(
-       leading: IconButton(icon: const Icon(Icons.arrow_back),onPressed: (){
+       leading: IconButton(icon: const Icon(Icons.arrow_back),onPressed: ()async{
         Uploaddata();
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>  HomePageScreen(profileurl: widget.OwnUser.imageurl.toString(),)));
+        final user = auth.currentUser;
+        final userdoc = await firestore.collection("User").doc(user!.uid).get();
+        Map<String,dynamic> userdata = userdoc.data() as Map<String,dynamic>;
+        String profileurl = userdata['profile url'].toString();
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>  HomePageScreen(profileurl: profileurl)));
        }),
         backgroundColor: Colors.black,
         title:  Text("connecto",style: GoogleFonts.jost(fontSize: 25),),
