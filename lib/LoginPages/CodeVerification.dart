@@ -93,7 +93,7 @@ class _CodeVerifyScreenState extends State<CodeVerifyScreen> {
                   setState(() {
                     loading = true;
                   });
-                  
+                  Loadingdialog().showloadingdialog(context);
                   final credential = PhoneAuthProvider.credential(
                     verificationId: widget.verificationId, 
                     smsCode: _codecontroller.text.toString());
@@ -103,17 +103,19 @@ class _CodeVerifyScreenState extends State<CodeVerifyScreen> {
                     setState(() {
                       loading = false;
                     });
-                    Loadingdialog().showloadingdialog(context);
+                    
                     final user = auth.currentUser;
                     final userdoc = await FirebaseFirestore.instance.collection("User").doc(user!.uid).get();
-                    Map<String,dynamic> userdata = userdoc.data() as Map<String,dynamic>;
-                    String imageurl = userdata['profile url'].toString();
+                    
                     if(userdoc.exists)
                     {
+                      Map<String,dynamic> userdata = userdoc.data() as Map<String,dynamic>;
+                      String imageurl = userdata['profile url'].toString();
                       // ignore: use_build_context_synchronously
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomePageScreen(profileurl: imageurl,)));
                     }
                     else{
+
                       // ignore: use_build_context_synchronously
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const Intropage()));
                     }

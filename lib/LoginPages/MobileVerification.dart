@@ -135,6 +135,8 @@ class _MobileVerifyScreenState extends State<MobileVerifyScreen> {
                           setState(() {
                             loading = false;
                           });
+                          _mobcontroller.clear();
+                          Navigator.pop(context);
                           Navigator.push(context, MaterialPageRoute(builder: (context)=> CodeVerifyScreen(verificationId: verificationId,)));
                         }, 
                         codeAutoRetrievalTimeout: (verificationId){

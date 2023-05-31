@@ -35,6 +35,7 @@ class MyFieldSpace extends StatelessWidget {
               }
             },
             decoration: InputDecoration( 
+              counterText: "", 
               border: InputBorder.none,
               hintText: hinttext,
               hintStyle: GoogleFonts.jost(color: Colors.grey)

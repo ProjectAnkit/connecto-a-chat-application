@@ -70,7 +70,7 @@ class _IntropageState extends State<Intropage> {
        imageurl = await ref.getDownloadURL();
     }
     else{
-      imageurl = "https://firebasestorage.googleapis.com/v0/b/mychatapp-9a94d.appspot.com/o/Default%20Image.jpg?alt=media&token=a1928579-d01a-4605-8fa9-2cf1f32dac7e";
+      imageurl = "https://firebasestorage.googleapis.com/v0/b/mychatapp-9a94d.appspot.com/o/DefaultProfile.jpg?alt=media&token=8079a1f8-5058-46f1-ad60-d292aae01466&_gl=1*1twg46f*_ga*MTA3MTMxOTc5OS4xNjg1MzY0NDQ0*_ga_CW55HF8NVT*MTY4NTUyOTk1NC41LjEuMTY4NTUzMDc3Ni4wLjAuMA..";
     }
      
     final user = auth.currentUser;
@@ -173,7 +173,8 @@ class _IntropageState extends State<Intropage> {
                         controller: _namecontroller, 
                         encrypt: false, 
                         hinttext: "Full Name", 
-                        validator: "please enter your own name"
+                        validator: "please enter your own name",
+                        Textlength: 12,
                         ),
                       
                      const SizedBox(
@@ -185,7 +186,8 @@ class _IntropageState extends State<Intropage> {
                         controller: _biocontroller, 
                         encrypt: false, 
                         hinttext: "Bio", 
-                        validator: "please enter your bio"
+                        validator: "please enter your bio",
+                        Textlength: 60,
                         ),
                     
                     

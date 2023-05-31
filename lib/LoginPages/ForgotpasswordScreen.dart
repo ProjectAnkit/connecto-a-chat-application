@@ -88,6 +88,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     loading = false;
                     _emailcontroller.clear();
                   });
+                  Navigator.pop(context);
                  }
       
                  catch(e){

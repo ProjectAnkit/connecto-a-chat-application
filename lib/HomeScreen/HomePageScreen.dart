@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -165,7 +163,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                       block = false;
                                     });
                                   }
-                                  log(block.toString());
                                   // ignore: use_build_context_synchronously
                                   Navigator.push(context, MaterialPageRoute(builder: (context)=> ChatPage(
                                     OwnUserModel: UserModel(
