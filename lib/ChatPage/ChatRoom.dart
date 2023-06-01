@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +33,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     block = widget.blocked;
   }
@@ -72,7 +70,6 @@ class _ChatPageState extends State<ChatPage> {
           "lastmessage": msg,
         });
         _msgcontroller.clear();
-        log("message sent");
       }
     }
   }
@@ -84,7 +81,7 @@ class _ChatPageState extends State<ChatPage> {
    
     final user = auth.currentUser;
 
-    return Scaffold(
+    return Scaffold(   
       backgroundColor: const Color.fromARGB(255, 231, 231, 231),
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -95,19 +92,17 @@ class _ChatPageState extends State<ChatPage> {
           },
           leading: CircleAvatar(backgroundImage: NetworkImage(widget.targetUser.imageurl.toString()),),
           title: Text(widget.targetUser.name.toString(),style: GoogleFonts.jost(color: Colors.white),),
-        subtitle: widget.targetUser.email!.isNotEmpty? SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Text(widget.targetUser.email.toString(),style: GoogleFonts.jost(color: Colors.white),)):
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Text(widget.targetUser.phoneNumber.toString(),style: GoogleFonts.jost(color: Colors.white),)),
+        subtitle: widget.targetUser.email!.isNotEmpty? 
+          Text(widget.targetUser.email.toString(),style: GoogleFonts.jost(color: Colors.white),overflow: TextOverflow.ellipsis,):
+          Text(widget.targetUser.phoneNumber.toString(),style: GoogleFonts.jost(color: Colors.white),overflow: TextOverflow.ellipsis,),
         ),
         actions: [
           PopupMenuButton(       
               itemBuilder: (context){
+                
                 return[
                      PopupMenuItem(
-                      onTap: (){
+                      onTap: (){  
                         setState(() {
                           block = true;
                         });
@@ -119,10 +114,17 @@ class _ChatPageState extends State<ChatPage> {
 
 
                        PopupMenuItem(
-                      onTap: (){
-                        setState(() {
+                      onTap: ()async{
+                        QuerySnapshot snapshot = await firestore.collection("Chatroom").where("unblocked.${user!.uid}",isEqualTo: false).get();
+                        if(snapshot.docs.isNotEmpty)
+                        {
+                        
+                        }
+                        else{
+                          setState(() {
                           block = false;
                         });
+                        }
                         firestore.collection("Chatroom").doc(widget.Chatroom!.chatRoomid).update({
                           "unblocked.${widget.targetUser.uid}": true,
                         });

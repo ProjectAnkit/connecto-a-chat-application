@@ -14,7 +14,7 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(name,style: GoogleFonts.jost(color: Colors.black),),
+      title: Text(name,style: GoogleFonts.jost(color: Colors.black),overflow: TextOverflow.ellipsis),
       subtitle: subtitle.isNotEmpty? Text(subtitle,style: GoogleFonts.jost(color: Colors.black),overflow: TextOverflow.ellipsis,maxLines: 1,): Text("Say hi! to your new friend",style: GoogleFonts.jost(color: Colors.deepPurpleAccent[600]),),
       leading:  CircleAvatar(
           backgroundImage: NetworkImage(imageurl)
