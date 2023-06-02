@@ -55,12 +55,15 @@ class _ChatPageState extends State<ChatPage> {
           timestamp: msgtime,
         );
 
+
+        //Main Messages
         firestore
             .collection("Chatroom")
             .doc(widget.Chatroom!.chatRoomid)
             .collection("messages")
             .doc(messageModel.chatid)
             .set(messageModel.toMap());
+        
 
         firestore
             .collection("Chatroom")
@@ -178,38 +181,71 @@ class _ChatPageState extends State<ChatPage> {
                         itemBuilder: (context, msg) {
                            return Padding(
                              padding:  msg.sender==widget.targetUser.uid? EdgeInsets.only(right: 60.0,bottom: 4,left: 8,top: 4):EdgeInsets.only(left: 60.0,bottom: 4,right: 8,top: 4),
-                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: msg.sender==widget.targetUser.uid?MainAxisAlignment.start:MainAxisAlignment.end,
-                              children: [
-                             
-                             msg.sender==widget.targetUser.uid?
-                             Padding(
-                               padding: const EdgeInsets.symmetric(vertical:6.0),
-                               child: Text("${msg.timestamp!.toDate().hour}:${msg.timestamp!.toDate().minute}",style: GoogleFonts.jost(color: Colors.black,fontSize: 10),),
-                             ):Container(),
-                                               
-                             Expanded(
-                               child: Column(
-                                crossAxisAlignment: msg.sender==widget.targetUser.uid?CrossAxisAlignment.start:CrossAxisAlignment.end,
-                                 children: [
-                                   Container(
-                                     decoration: BoxDecoration(color:msg.sender==widget.targetUser.uid? Colors.black54:Colors.grey[400],borderRadius: BorderRadius.circular(25)),
-                                     child: Padding(
-                                   padding: const EdgeInsets.all(10.0),
-                                   child: Text(msg.message.toString(),style: GoogleFonts.jost(fontSize: 18,color: Colors.white))
-                                     ),
-                                   )
-                                 ],
+                             child: InkWell(
+                              onTap: (){
+                               showDialog(context: context, 
+                               builder: (context){
+                                if(msg.sender == user.uid)
+                                {
+                                  return AlertDialog(
+                                    title: Text("Are you sure, you want to delete this message from both end ?",style: GoogleFonts.jost(color: Colors.black),),
+                                    actions: [
+                                      TextButton(onPressed: (){
+                                          firestore.collection("Chatroom").doc(widget.Chatroom!.chatRoomid).update({
+                                           "lastmessage": "message deleted",
+                                          });
+                                          firestore.collection("Chatroom").doc(widget.Chatroom!.chatRoomid).collection("messages").doc(msg.chatid).delete();
+                                          Navigator.pop(context); 
+                                      }, child: Text("delete",style: GoogleFonts.jost(color: Colors.blue),),
+                                      ),
+
+                                      TextButton(onPressed: (){
+                                         Navigator.pop(context);
+                                      }, child: Text("cancel",style: GoogleFonts.jost(color: Colors.blue),),
+                                      ),
+                                    ],
+                                );
+
+
+                                }
+                                else{
+                                    return Container();
+                                } 
+                               });
+                              },
+                               child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: msg.sender==widget.targetUser.uid?MainAxisAlignment.start:MainAxisAlignment.end,
+                                children: [
+                               
+                               msg.sender==widget.targetUser.uid?
+                               Padding(
+                                 padding: const EdgeInsets.symmetric(vertical:6.0),
+                                 child: Text("${msg.timestamp!.toDate().hour}:${msg.timestamp!.toDate().minute}",style: GoogleFonts.jost(color: Colors.black,fontSize: 10),),
+                               ):Container(),
+                                                 
+                               Expanded(
+                                 child: Column(
+                                  crossAxisAlignment: msg.sender==widget.targetUser.uid?CrossAxisAlignment.start:CrossAxisAlignment.end,
+                                   children: [
+                                     Container(
+                                       decoration: BoxDecoration(color:msg.sender==widget.targetUser.uid? Colors.black54:Colors.grey[400],borderRadius: BorderRadius.circular(25)),
+                                       child: Padding(
+                                     padding: const EdgeInsets.all(10.0),
+                                     child: Text(msg.message.toString(),style: GoogleFonts.jost(fontSize: 18,color: Colors.white))
+                                       ),
+                                     )
+                                   ],
+                                 ),
                                ),
-                             ),
-                             
-                             msg.sender==user!.uid?
-                             Padding(
-                               padding: const EdgeInsets.symmetric(vertical:6.0),
-                               child: Text("${msg.timestamp!.toDate().hour}:${msg.timestamp!.toDate().minute}",style: GoogleFonts.jost(color: Colors.black,fontSize: 10),),
-                             ):Container()
-                              ],
+                               
+                               msg.sender==user!.uid?
+                               Padding(
+                                 padding: const EdgeInsets.symmetric(vertical:6.0),
+                                 child: Text("${msg.timestamp!.toDate().hour}:${msg.timestamp!.toDate().minute}",style: GoogleFonts.jost(color: Colors.black,fontSize: 10),),
+                               ):Container()
+                                ],
+                               ),
                              ),
                            );
                         },
