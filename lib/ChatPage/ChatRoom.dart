@@ -183,11 +183,13 @@ class _ChatPageState extends State<ChatPage> {
                              padding:  msg.sender==widget.targetUser.uid? EdgeInsets.only(right: 60.0,bottom: 4,left: 8,top: 4):EdgeInsets.only(left: 60.0,bottom: 4,right: 8,top: 4),
                              child: InkWell(
                               onLongPress: (){
-                               showDialog(context: context, 
-                               builder: (context){
                                 if(msg.sender == user.uid)
                                 {
-                                  return AlertDialog(
+                               showDialog(
+                                barrierDismissible: false,
+                                context: context, 
+                               builder: (context){
+                                return AlertDialog(
                                     title: Text("Are you sure, you want to delete this message from both end ?",style: GoogleFonts.jost(color: Colors.black),),
                                     actions: [
                                       TextButton(onPressed: (){
@@ -205,14 +207,14 @@ class _ChatPageState extends State<ChatPage> {
                                       ),
                                     ],
                                 );
-
-
+                                
+                               });
                                 }
                                 else{
-                                    return Container();
+                                    return;
                                 } 
-                               });
                               },
+                              
                                child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: msg.sender==widget.targetUser.uid?MainAxisAlignment.start:MainAxisAlignment.end,
