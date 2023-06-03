@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -89,8 +90,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
               },
               child: CircleAvatar(
                 radius: 18,
+                backgroundColor: Colors.black,
                 backgroundImage: NetworkImage(widget.profileurl.toString()),
-              ),
+                  ),
             ),
             SizedBox(width: 8,)
         ],

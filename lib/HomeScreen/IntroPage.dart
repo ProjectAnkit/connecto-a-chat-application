@@ -70,7 +70,7 @@ class _IntropageState extends State<Intropage> {
        imageurl = await ref.getDownloadURL();
     }
     else{
-      imageurl = "https://firebasestorage.googleapis.com/v0/b/mychatapp-9a94d.appspot.com/o/DefaultProfile.jpg?alt=media&token=8079a1f8-5058-46f1-ad60-d292aae01466&_gl=1*1twg46f*_ga*MTA3MTMxOTc5OS4xNjg1MzY0NDQ0*_ga_CW55HF8NVT*MTY4NTUyOTk1NC41LjEuMTY4NTUzMDc3Ni4wLjAuMA..";
+      imageurl = "https://firebasestorage.googleapis.com/v0/b/mychatapp-9a94d.appspot.com/o/DefaultProfile.jpg?alt=media&token=c208f249-1a8d-43e3-add5-8635b6476ca5&_gl=1*ouz4z6*_ga*MTA3MTMxOTc5OS4xNjg1MzY0NDQ0*_ga_CW55HF8NVT*MTY4NTc3NjY5OS4xNC4xLjE2ODU3NzY4OTguMC4wLjA.";
     }
      
     final user = auth.currentUser;

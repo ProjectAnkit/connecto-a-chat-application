@@ -17,6 +17,7 @@ class UserCard extends StatelessWidget {
       title: Text(name,style: GoogleFonts.jost(color: Colors.black),overflow: TextOverflow.ellipsis),
       subtitle: subtitle.isNotEmpty? Text(subtitle,style: GoogleFonts.jost(color: Colors.grey[700]),overflow: TextOverflow.ellipsis,maxLines: 1,): Text("Say hi! to your new friend",style: GoogleFonts.jost(color: Colors.deepPurpleAccent[600]),),
       leading:  CircleAvatar(
+        backgroundColor: Colors.white,
           backgroundImage: NetworkImage(imageurl)
       ),
       trailing: Text(msgtime,style: GoogleFonts.jost(color: Colors.black)),

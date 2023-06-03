@@ -182,7 +182,7 @@ class _ChatPageState extends State<ChatPage> {
                            return Padding(
                              padding:  msg.sender==widget.targetUser.uid? EdgeInsets.only(right: 60.0,bottom: 4,left: 8,top: 4):EdgeInsets.only(left: 60.0,bottom: 4,right: 8,top: 4),
                              child: InkWell(
-                              onTap: (){
+                              onLongPress: (){
                                showDialog(context: context, 
                                builder: (context){
                                 if(msg.sender == user.uid)

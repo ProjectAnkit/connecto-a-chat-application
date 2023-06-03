@@ -30,7 +30,7 @@ class _GetImageState extends State<GetImage> {
 
    Future getImage()async{
     final user = auth.currentUser;
-    final imagepath = await picker.pickImage(source: ImageSource.gallery,imageQuality: 80);
+    final imagepath = await picker.pickImage(source: ImageSource.gallery,imageQuality: 30);
 
     if(imagepath!=null)
     {
@@ -67,7 +67,8 @@ class _GetImageState extends State<GetImage> {
                       },
                       child: CircleAvatar(
                         radius: 70,
-                        backgroundImage: image!=null? NetworkImage(userProfile) : NetworkImage(widget.OwnUser.imageurl.toString()),
+                        backgroundColor: Colors.white,
+                        backgroundImage:  image!=null? NetworkImage(userProfile) : NetworkImage(widget.OwnUser.imageurl.toString()),
                       ),
                     ),
                     const SizedBox(
