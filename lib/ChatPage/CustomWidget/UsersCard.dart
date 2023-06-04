@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,7 +19,9 @@ class UserCard extends StatelessWidget {
       subtitle: subtitle.isNotEmpty? Text(subtitle,style: GoogleFonts.jost(color: Colors.grey[700]),overflow: TextOverflow.ellipsis,maxLines: 1,): Text("Say hi! to your new friend",style: GoogleFonts.jost(color: Colors.deepPurpleAccent[600]),),
       leading:  CircleAvatar(
         backgroundColor: Colors.white,
-          backgroundImage: NetworkImage(imageurl)
+          backgroundImage: CachedNetworkImageProvider(
+            imageurl
+          )
       ),
       trailing: Text(msgtime,style: GoogleFonts.jost(color: Colors.black)),
     );

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,9 @@ class _ChatPageState extends State<ChatPage> {
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=> WatchProfileScreen(targetUser: widget.targetUser,)));
           },
-          leading: CircleAvatar(backgroundImage: NetworkImage(widget.targetUser.imageurl.toString()),),
+          leading: CircleAvatar(
+            backgroundColor: Colors.black,
+            backgroundImage: CachedNetworkImageProvider(widget.targetUser.imageurl.toString())),
           title: Text(widget.targetUser.name.toString(),style: GoogleFonts.jost(color: Colors.white),),
         subtitle: widget.targetUser.email!.isNotEmpty? 
           Text(widget.targetUser.email.toString(),style: GoogleFonts.jost(color: Colors.white),overflow: TextOverflow.ellipsis,):

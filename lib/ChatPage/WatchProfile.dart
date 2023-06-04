@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mychatapplication/Utilities/Models/UserModel.dart';
@@ -20,7 +21,7 @@ class _WatchProfileScreenState extends State<WatchProfileScreen> {
             SizedBox(
               height: 440,
               width: MediaQuery.of(context).size.width,
-              child: Image(image: NetworkImage(widget.targetUser.imageurl.toString()),fit: BoxFit.cover,),
+              child: Image(image: CachedNetworkImageProvider(widget.targetUser.imageurl.toString()),fit: BoxFit.cover,),
             ),
       
             const SizedBox(
