@@ -15,4 +15,5 @@
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 </resources>

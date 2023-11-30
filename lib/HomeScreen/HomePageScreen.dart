@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mychatapplication/ChatPage/ChatRoom.dart';
 import 'package:mychatapplication/ChatPage/CustomWidget/UsersCard.dart';
+import 'package:mychatapplication/HomeScreen/NotificationPanel.dart';
 import 'package:mychatapplication/HomeScreen/SearchPage.dart';
 import 'package:mychatapplication/HomeScreen/ViewProfilePage.dart';
 import 'package:mychatapplication/LoginPages/Loginpage.dart';
 import 'package:mychatapplication/Utilities/Models/ChatRoomModel.dart';
 import 'package:mychatapplication/Utilities/Models/UserModel.dart';
+import 'package:mychatapplication/Utilities/Notifications/Notifications.dart';
 import 'package:mychatapplication/Utilities/Services/GetUserModelfromid.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -27,6 +29,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
   final firestore = FirebaseFirestore.instance;
   getUserModel _getUserModel = getUserModel();
   bool block = false;
+
+  NotificationServices _notificationServices = NotificationServices();
+
+  @override
+  void initState() {
+    _notificationServices.initFirebase(context);
+    _notificationServices.reqpushnotifications();
+    super.initState();
+  }
  
   @override
   Widget build(BuildContext context) {
@@ -56,12 +67,42 @@ class _HomePageScreenState extends State<HomePageScreen> {
           }
         ,backgroundColor: Colors.black,child: const Icon(Icons.person_add_alt_sharp,color: Colors.white,),
       ),
+
+      drawer: Drawer(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+             
+              InkWell(
+                onTap: (){
+                  auth.signOut();
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+                },
+                child: Container(
+                  decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade400,),borderRadius: BorderRadius.circular(5)),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8),
+                    child: Row(
+                      children: [
+                        Icon(Icons.logout,color: Colors.black,),
+                        SizedBox(
+                          width: 80,
+                        ),
+                        Text("Log Out",style: TextStyle(color: Colors.black),)
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
       
       appBar:AppBar(
-        leading: IconButton(onPressed: (){
-                 auth.signOut();
-                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LoginPage()));
-        }, icon: Icon(Icons.logout_rounded)),
         backgroundColor: Colors.black,
         title: Text("connecto",style: GoogleFonts.jost(fontSize: 25)),
         centerTitle: true,
@@ -95,7 +136,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 backgroundImage: CachedNetworkImageProvider(widget.profileurl.toString()),
                   ),
             ),
-            SizedBox(width: 8,)
+            const SizedBox(width: 8,)
         ],
       ),
       

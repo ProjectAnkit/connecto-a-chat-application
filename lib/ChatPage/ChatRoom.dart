@@ -31,10 +31,8 @@ class _ChatPageState extends State<ChatPage> {
   bool block = false;
 
 
-
   @override
   void initState() {
-
     super.initState();
     block = widget.blocked;
   }
